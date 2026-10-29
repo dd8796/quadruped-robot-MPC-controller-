@@ -1,0 +1,27 @@
+# controller_manager config for gazebo_ros2_control: a single locomotion controller (effort).
+# The start pose is held by HomePosePlugin until activation.
+controller_manager:
+  ros__parameters:
+    # Matches the 1 ms Gazebo physics step.
+    update_rate: 1000  # Hz
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+    # MIT Cheetah-Software locomotion, started by spawn.launch.py.
+    mevius_mpc_controller:
+      type: quadru_control/CheetahController
+
+mevius_mpc_controller:
+  ros__parameters:
+    # External localization (trunk pose): Gazebo ground truth in simulation, visual(-inertial)
+    # odometry on the real robot.
+    localization_topic: /chien/ground_truth_odom
+    # Stairs gait: 144 ms swing, 8 cm swing height (validated on the 10 cm course).
+    gait_cycle_s: 0.65
+    gait_duty: 0.8
+    walk_speed: 0.3
+    # Swing legs: operational-space control.
+    swing_control: osc
+    swing_omega: 50.0
+    swing_zeta: 1.0

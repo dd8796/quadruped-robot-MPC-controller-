@@ -1,0 +1,44 @@
+<?xml version="1.0" ?>
+<!-- Same as staircase.world with 10 cm steps. -->
+<sdf version="1.5">
+  <world name="default">
+    <include><uri>model://sun</uri></include>
+    <include><uri>model://ground_plane</uri></include>
+    <model name="step_1">
+      <static>true</static>
+      <pose>-2.150 0 0.0500 0 0 0</pose>
+      <link name="link">
+        <collision name="collision"><geometry><box><size>0.30 2.0 0.1000</size></box></geometry></collision>
+        <visual name="visual"><geometry><box><size>0.30 2.0 0.1000</size></box></geometry>
+          <material><ambient>0.6 0.6 0.65 1</ambient><diffuse>0.6 0.6 0.65 1</diffuse></material></visual>
+      </link>
+    </model>
+    <model name="step_2">
+      <static>true</static>
+      <pose>-2.450 0 0.1000 0 0 0</pose>
+      <link name="link">
+        <collision name="collision"><geometry><box><size>0.30 2.0 0.2000</size></box></geometry></collision>
+        <visual name="visual"><geometry><box><size>0.30 2.0 0.2000</size></box></geometry>
+          <material><ambient>0.65 0.65 0.7000000000000001 1</ambient><diffuse>0.65 0.65 0.7000000000000001 1</diffuse></material></visual>
+      </link>
+    </model>
+    <model name="step_3">
+      <static>true</static>
+      <pose>-2.750 0 0.1500 0 0 0</pose>
+      <link name="link">
+        <collision name="collision"><geometry><box><size>0.30 2.0 0.3000</size></box></geometry></collision>
+        <visual name="visual"><geometry><box><size>0.30 2.0 0.3000</size></box></geometry>
+          <material><ambient>0.7 0.7 0.75 1</ambient><diffuse>0.7 0.7 0.75 1</diffuse></material></visual>
+      </link>
+    </model>
+    <model name="landing">
+      <static>true</static>
+      <pose>-3.300 0 0.1500 0 0 0</pose>
+      <link name="link">
+        <collision name="collision"><geometry><box><size>0.80 2.0 0.3000</size></box></geometry></collision>
+        <visual name="visual"><geometry><box><size>0.80 2.0 0.3000</size></box></geometry>
+          <material><ambient>0.8 0.8 0.85 1</ambient><diffuse>0.8 0.8 0.85 1</diffuse></material></visual>
+      </link>
+    </model>
+  </world>
+</sdf>

@@ -1,0 +1,7 @@
+<library path="quadru_control">
+  <class name="quadru_control/CheetahController" type="quadru_control::CheetahController" base_class_type="controller_interface::ControllerInterface">
+    <description>
+      Locomotion MIT Cheetah-Software (MPC convexe qpOASES, estimateur d'etat, trajectoires de vol) adaptee a notre robot.
+    </description>
+  </class>
+</library>

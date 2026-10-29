@@ -1,0 +1,956 @@
+<?xml version="1.0" ?>
+<!-- Generated using onshape-to-robot -->
+<!-- Onshape document_id: f914da8db238ab9e7e7f927d / workspace_id: ead677ebe1778ff51a562df0 -->
+<robot name="urdf chien ">
+  <!-- Link trunk -->
+  <link name="trunk">
+    <inertial>
+      <origin xyz="-0.0520205 0.00128595 0.509659" rpy="0 0 0"/>
+      <mass value="5.00095"/>
+      <inertia ixx="0.0684615" ixy="1.1544e-07" ixz="-0.00117595" iyy="0.178315" iyz="-6.10421e-07" izz="0.212942"/>
+    </inertial>
+    <!-- Part part_21 -->
+    <visual>
+      <origin xyz="0.0704482 -0.0848148 0.833894" rpy="-1.5708 -0 0"/>
+      <geometry>
+        <mesh filename="package://spawn_chien/assets/part_21.stl"/>
+      </geometry>
+      <material name="part_21_material">
+        <color rgba="0.647059 0.647059 0.647059 1"/>
+      </material>
+    </visual>
+    <!-- Part part_9 -->
+    <visual>
+      <origin xyz="-0.140552 -0.0846172 0.499727" rpy="1.5708 0 -1.5708"/>
+      <geometry>
+        <mesh filename="package://spawn_chien/assets/part_9.stl"/>
+      </geometry>
+      <material name="part_9_material">
+        <color rgba="0.768627 0.886275 0.952941 1"/>
+      </material>
+    </visual>
+    <!-- Part part_9_2 -->
+    <visual>
+      <origin xyz="0.0314482 -0.0846172 0.499727" rpy="1.5708 -0 1.5708"/>
+      <geometry>
+        <mesh filename="package://spawn_chien/assets/part_9.stl"/>
+      </geometry>
+      <material name="part_9_2_material">
+        <color rgba="0.768627 0.886275 0.952941 1"/>
+      </material>
+    </visual>
+    <!-- Part part_9_3 -->
+    <visual>
+      <origin xyz="0.0314482 0.0871865 0.499727" rpy="1.5708 -0 1.5708"/>
+      <geometry>
+        <mesh filename="package://spawn_chien/assets/part_9.stl"/>
+      </geometry>
+      <material name="part_9_3_material">
+        <color rgba="0.768627 0.886275 0.952941 1"/>
+      </material>
+    </visual>
+    <!-- Part part_9_4 -->
+    <visual>
+      <origin xyz="-0.140552 0.0871865 0.499727" rpy="1.5708 0 -1.5708"/>
+      <geometry>
+        <mesh filename="package://spawn_chien/assets/part_9.stl"/>
+      </geometry>
+      <material name="part_9_4_material">
+        <color rgba="0.768627 0.886275 0.952941 1"/>
+      </material>
+    </visual>
+    <!-- Box collision fitted to the trunk visual meshes (mesh collisions are unstable in ODE). -->
+    <collision>
+      <origin xyz="-0.0546 0.0013 0.5183" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.584 0.3158 0.1744"/>
+      </geometry>
+    </collision>
+  </link>
+  <!-- Link leg1_upper -->
+  <link name="leg1_upper">
+    <inertial>
+      <origin xyz="0.0186384 0 -0.0635783" rpy="0 0 0"/>
+      <mass value="0.507359"/>
+      <inertia ixx="0.00181356" ixy="0" ixz="0.000119632" iyy="0.00127482" iyz="-0" izz="0.0011445"/>
+    </inertial>
+    <!-- Part part_12 -->
+    <visual>
+      <origin xyz="0.00808065 -0.335229 -0.058" rpy="-1.5708 0 0"/>
+      <geometry>
+        <mesh filename="package://spawn_chien/assets/part_12.stl"/>
+      </geometry>
+      <material name="part_12_material">
+        <color rgba="0.980392 0.713725 0.00392157 1"/>
+      </material>
+    </visual>
+    <!-- Part part_9_5 -->
+    <visual>
+      <origin xyz="0.187 0 -0.0744123" rpy="0 -1.5708 0"/>
+      <geometry>
+        <mesh filename="package://spawn_chien/assets/part_9.stl"/>
+      </geometry>
+      <material name="part_9_5_material">
+        <color rgba="0.768627 0.886275 0.952941 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.0043 0.0 -0.0715" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.1115 0.1442 0.1429"/>
+      </geometry>
+    </collision>
+  </link>
+  <!-- Link leg1_lower -->
+  <link name="leg1_lower">
+    <inertial>
+      <origin xyz="-0.0136264 0.0870948 -0.025" rpy="0 0 0"/>
+      <mass value="1.13575"/>
+      <inertia ixx="0.00924521" ixy="0.000782003" ixz="0" iyy="0.00202899" iyz="-0" izz="0.0105733"/>
+    </inertial>
+    <!-- Part part_19 -->
+    <visual>
+      <origin xyz="0 0 0.215128" rpy="-0 -0 0"/>
+      <geometry>
+        <mesh filename="package://spawn_chien/assets/part_19.stl"/>
+      </geometry>
+      <material name="part_19_material">
+        <color rgba="0.498039 0.498039 0.498039 1"/>
+      </material>
+    </visual>
+    <!-- Part part_22 -->
+    <visual>
+      <origin xyz="0 -0 0.325128" rpy="0 0 -0"/>
+      <geometry>
+        <mesh filename="package://spawn_chien/assets/part_22.stl"/>
+      </geometry>
+      <material name="part_22_material">
+        <color rgba="0.498039 0.498039 0.498039 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.0 0.11 -0.025" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.13 0.3499 0.05"/>
+      </geometry>
+    </collision>
+  </link>
+  <!-- Link leg1_foot -->
+  <link name="leg1_foot">
+    <inertial>
+      <origin xyz="0.0948155 -0.0714168 -0.02" rpy="0 0 0"/>
+      <mass value="0.752244"/>
+      <inertia ixx="0.00215531" ixy="0.00237894" ixz="0" iyy="0.00301188" iyz="-0" izz="0.00496208"/>
+    </inertial>
+    <!-- Part part_20 -->
+    <visual>
+      <origin xyz="-0.0380282 0.34673 -0.335128" rpy="-3.14159 -0 -0"/>
+      <geometry>
+        <mesh filename="package://spawn_chien/assets/part_20.stl"/>
+      </geometry>
+      <material name="part_20_material">
+        <color rgba="0.980392 0.713725 0.00392157 1"/>
+      </material>
+    </visual>
+    <!-- Foot collision: 2 cm sphere at the contact point (mesh contact is unstable in ODE). -->
+    <collision>
+      <origin xyz="0.19206 -0.15791 -0.04000" rpy="0 0 0"/>
+      <geometry>
+        <sphere radius="0.02"/>
+      </geometry>
+    </collision>
+  </link>
+  <!-- Joint from leg1_lower to leg1_foot -->
+  <joint name="leg1_knee" type="revolute">
+    <origin xyz="-0.00169297 0.26 -0.045" rpy="-3.14159 0 -0"/>
+    <parent link="leg1_lower"/>
+    <child link="leg1_foot"/>
+    <axis xyz="0 0 1"/>
+    <dynamics damping="0.5" friction="0.1"/>
+    <limit effort="35" velocity="10" lower="-3.141592653589793" upper="3.141592653589793"/>
+  </joint>
+  <!-- Joint from leg1_upper to leg1_lower -->
+  <joint name="leg1_flex" type="revolute">
+    <origin xyz="-0.019 -0 -0.0744123" rpy="1.5708 1.33288 1.5708"/>
+    <parent link="leg1_upper"/>
+    <child link="leg1_lower"/>
+    <axis xyz="0 0 1"/>
+    <dynamics damping="0.5" friction="0.1"/>
+    <limit effort="35" velocity="10" lower="-3.141592653589793" upper="3.141592653589793"/>
+  </joint>
+  <!-- Joint from trunk to leg1_upper -->
+  <joint name="leg1_abduction" type="revolute">
+    <origin xyz="-0.346552 0.0871865 0.499727" rpy="-1.5708 0 -1.5708"/>
+    <parent link="trunk"/>
+    <child link="leg1_upper"/>
+    <axis xyz="0 0 1"/>
+    <dynamics damping="0.5" friction="0.1"/>
+    <limit effort="35" velocity="10" lower="-3.141592653589793" upper="3.141592653589793"/>
+  </joint>
+  <!-- Link leg2_upper -->
+  <link name="leg2_upper">
+    <inertial>
+      <origin xyz="0.0186384 0 -0.0635783" rpy="0 0 0"/>
+      <mass value="0.507359"/>
+      <inertia ixx="0.00181356" ixy="0" ixz="0.000119632" iyy="0.00127482" iyz="-0" izz="0.0011445"/>
+    </inertial>
+    <!-- Part part_9_6 -->
+    <visual>
+      <origin xyz="0.187 0 -0.0744123" rpy="0 -1.5708 0"/>
+      <geometry>
+        <mesh filename="package://spawn_chien/assets/part_9.stl"/>
+      </geometry>
+      <material name="part_9_6_material">
+        <color rgba="0.768627 0.886275 0.952941 1"/>
+      </material>
+    </visual>
+    <!-- Part part_12_2 -->
+    <visual>
+      <origin xyz="0.00808065 -0.335229 -0.058" rpy="-1.5708 0 0"/>
+      <geometry>
+        <mesh filename="package://spawn_chien/assets/part_12.stl"/>
+      </geometry>
+      <material name="part_12_2_material">
+        <color rgba="0.980392 0.713725 0.00392157 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.0043 0.0 -0.0715" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.1115 0.1442 0.1429"/>
+      </geometry>
+    </collision>
+  </link>
+  <!-- Link leg2_lower -->
+  <link name="leg2_lower">
+    <inertial>
+      <origin xyz="-0.0136264 -0.0870948 -0.025" rpy="0 0 0"/>
+      <mass value="1.13575"/>
+      <inertia ixx="0.00924521" ixy="-0.000782003" ixz="0" iyy="0.00202899" iyz="0" izz="0.0105733"/>
+    </inertial>
+    <!-- Part part_19_2 -->
+    <visual>
+      <origin xyz="0 0 -0.265128" rpy="-3.14159 -0 -0"/>
+      <geometry>
+        <mesh filename="package://spawn_chien/assets/part_19.stl"/>
+      </geometry>
+      <material name="part_19_2_material">
+        <color rgba="0.498039 0.498039 0.498039 1"/>
+      </material>
+    </visual>
+    <!-- Part part_22_2 -->
+    <visual>
+      <origin xyz="0 0 -0.375128" rpy="-3.14159 0 0"/>
+      <geometry>
+        <mesh filename="package://spawn_chien/assets/part_22.stl"/>
+      </geometry>
+      <material name="part_22_2_material">
+        <color rgba="0.498039 0.498039 0.498039 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.0 0.11 -0.025" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.13 0.3499 0.05"/>
+      </geometry>
+    </collision>
+  </link>
+  <!-- Link leg2_foot -->
+  <link name="leg2_foot">
+    <inertial>
+      <origin xyz="0.0948155 -0.0714168 -0.02" rpy="0 0 0"/>
+      <mass value="0.752244"/>
+      <inertia ixx="0.00215531" ixy="0.00237894" ixz="0" iyy="0.00301188" iyz="0" izz="0.00496208"/>
+    </inertial>
+    <!-- Part part_20_2 -->
+    <visual>
+      <origin xyz="-0.0380282 0.34673 -0.335128" rpy="-3.14159 -0 -0"/>
+      <geometry>
+        <mesh filename="package://spawn_chien/assets/part_20.stl"/>
+      </geometry>
+      <material name="part_20_2_material">
+        <color rgba="0.980392 0.713725 0.00392157 1"/>
+      </material>
+    </visual>
+    <!-- Foot collision: 2 cm sphere at the contact point (mesh contact is unstable in ODE). -->
+    <collision>
+      <origin xyz="0.19206 -0.15791 -0.04000" rpy="0 0 0"/>
+      <geometry>
+        <sphere radius="0.02"/>
+      </geometry>
+    </collision>
+  </link>
+  <!-- Joint from leg2_lower to leg2_foot -->
+  <joint name="leg2_knee" type="revolute">
+    <origin xyz="-0.00169297 -0.26 -0.005" rpy="-0 0 0"/>
+    <parent link="leg2_lower"/>
+    <child link="leg2_foot"/>
+    <axis xyz="0 0 1"/>
+    <dynamics damping="0.5" friction="0.1"/>
+    <limit effort="35" velocity="10" lower="-3.141592653589793" upper="3.141592653589793"/>
+  </joint>
+  <!-- Joint from leg2_upper to leg2_lower -->
+  <joint name="leg2_flex" type="revolute">
+    <origin xyz="-0.019 0 -0.0744123" rpy="-1.5708 1.31744 -1.5708"/>
+    <parent link="leg2_upper"/>
+    <child link="leg2_lower"/>
+    <axis xyz="0 0 1"/>
+    <dynamics damping="0.5" friction="0.1"/>
+    <limit effort="35" velocity="10" lower="-3.141592653589793" upper="3.141592653589793"/>
+  </joint>
+  <!-- Joint from trunk to leg2_upper -->
+  <joint name="leg2_abduction" type="revolute">
+    <origin xyz="-0.346552 -0.0846172 0.499727" rpy="1.5708 -0 1.5708"/>
+    <parent link="trunk"/>
+    <child link="leg2_upper"/>
+    <axis xyz="0 0 1"/>
+    <dynamics damping="0.5" friction="0.1"/>
+    <limit effort="35" velocity="10" lower="-3.141592653589793" upper="3.141592653589793"/>
+  </joint>
+  <!-- Link leg3_upper -->
+  <link name="leg3_upper">
+    <inertial>
+      <origin xyz="0.0186384 0 -0.0635783" rpy="0 0 0"/>
+      <mass value="0.507359"/>
+      <inertia ixx="0.00181356" ixy="0" ixz="0.000119632" iyy="0.00127482" iyz="-0" izz="0.0011445"/>
+    </inertial>
+    <!-- Part part_12_3 -->
+    <visual>
+      <origin xyz="0.00808065 -0.335229 -0.058" rpy="-1.5708 0 0"/>
+      <geometry>
+        <mesh filename="package://spawn_chien/assets/part_12.stl"/>
+      </geometry>
+      <material name="part_12_3_material">
+        <color rgba="0.980392 0.713725 0.00392157 1"/>
+      </material>
+    </visual>
+    <!-- Part part_9_7 -->
+    <visual>
+      <origin xyz="0.187 0 -0.0744123" rpy="3.14159 1.5708 0"/>
+      <geometry>
+        <mesh filename="package://spawn_chien/assets/part_9.stl"/>
+      </geometry>
+      <material name="part_9_7_material">
+        <color rgba="0.768627 0.886275 0.952941 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.0043 0.0 -0.0715" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.1115 0.1442 0.1429"/>
+      </geometry>
+    </collision>
+  </link>
+  <!-- Link leg3_lower -->
+  <link name="leg3_lower">
+    <inertial>
+      <origin xyz="-0.0136264 0.0870948 -0.025" rpy="0 0 0"/>
+      <mass value="1.13575"/>
+      <inertia ixx="0.00924521" ixy="0.000782003" ixz="-0" iyy="0.00202899" iyz="-0" izz="0.0105733"/>
+    </inertial>
+    <!-- Part part_19_3 -->
+    <visual>
+      <origin xyz="0 -0 0.215128" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://spawn_chien/assets/part_19.stl"/>
+      </geometry>
+      <material name="part_19_3_material">
+        <color rgba="0.498039 0.498039 0.498039 1"/>
+      </material>
+    </visual>
+    <!-- Part part_22_3 -->
+    <visual>
+      <origin xyz="-0 -0 0.325128" rpy="-0 0 0"/>
+      <geometry>
+        <mesh filename="package://spawn_chien/assets/part_22.stl"/>
+      </geometry>
+      <material name="part_22_3_material">
+        <color rgba="0.498039 0.498039 0.498039 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.0 0.11 -0.025" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.13 0.3499 0.05"/>
+      </geometry>
+    </collision>
+  </link>
+  <!-- Link leg3_foot -->
+  <link name="leg3_foot">
+    <inertial>
+      <origin xyz="0.0948155 -0.0714168 -0.02" rpy="0 0 0"/>
+      <mass value="0.752244"/>
+      <inertia ixx="0.00215531" ixy="0.00237894" ixz="-0" iyy="0.00301188" iyz="0" izz="0.00496208"/>
+    </inertial>
+    <!-- Part part_20_3 -->
+    <visual>
+      <origin xyz="-0.0380282 0.34673 -0.335128" rpy="3.14159 0 -0"/>
+      <geometry>
+        <mesh filename="package://spawn_chien/assets/part_20.stl"/>
+      </geometry>
+      <material name="part_20_3_material">
+        <color rgba="0.980392 0.713725 0.00392157 1"/>
+      </material>
+    </visual>
+    <!-- Foot collision: 2 cm sphere at the contact point (mesh contact is unstable in ODE). -->
+    <collision>
+      <origin xyz="0.19206 -0.15791 -0.04000" rpy="0 0 0"/>
+      <geometry>
+        <sphere radius="0.02"/>
+      </geometry>
+    </collision>
+  </link>
+  <!-- Joint from leg3_lower to leg3_foot -->
+  <joint name="leg3_knee" type="revolute">
+    <origin xyz="-0.00169297 0.26 -0.045" rpy="3.14159 0 0"/>
+    <parent link="leg3_lower"/>
+    <child link="leg3_foot"/>
+    <axis xyz="0 0 1"/>
+    <dynamics damping="0.5" friction="0.1"/>
+    <limit effort="35" velocity="10" lower="-3.141592653589793" upper="3.141592653589793"/>
+  </joint>
+  <!-- Joint from leg3_upper to leg3_lower -->
+  <joint name="leg3_flex" type="revolute">
+    <origin xyz="-0.019 -0 -0.0744123" rpy="-1.5708 -1.27656 -1.5708"/>
+    <parent link="leg3_upper"/>
+    <child link="leg3_lower"/>
+    <axis xyz="0 0 1"/>
+    <dynamics damping="0.5" friction="0.1"/>
+    <limit effort="35" velocity="10" lower="-3.141592653589793" upper="3.141592653589793"/>
+  </joint>
+  <!-- Joint from trunk to leg3_upper -->
+  <joint name="leg3_abduction" type="revolute">
+    <origin xyz="0.237448 0.0871865 0.499727" rpy="1.5708 0 -1.5708"/>
+    <parent link="trunk"/>
+    <child link="leg3_upper"/>
+    <axis xyz="0 0 1"/>
+    <dynamics damping="0.5" friction="0.1"/>
+    <limit effort="35" velocity="10" lower="-3.141592653589793" upper="3.141592653589793"/>
+  </joint>
+  <!-- Link leg4_upper -->
+  <link name="leg4_upper">
+    <inertial>
+      <origin xyz="0.0186384 0 -0.0635783" rpy="0 0 0"/>
+      <mass value="0.507359"/>
+      <inertia ixx="0.00181356" ixy="0" ixz="0.000119632" iyy="0.00127482" iyz="-0" izz="0.0011445"/>
+    </inertial>
+    <!-- Part part_12_4 -->
+    <visual>
+      <origin xyz="0.00808065 -0.335229 -0.058" rpy="-1.5708 0 -0"/>
+      <geometry>
+        <mesh filename="package://spawn_chien/assets/part_12.stl"/>
+      </geometry>
+      <material name="part_12_4_material">
+        <color rgba="0.980392 0.713725 0.00392157 1"/>
+      </material>
+    </visual>
+    <!-- Part part_9_8 -->
+    <visual>
+      <origin xyz="0.187 0 -0.0744123" rpy="3.14159 1.5708 0"/>
+      <geometry>
+        <mesh filename="package://spawn_chien/assets/part_9.stl"/>
+      </geometry>
+      <material name="part_9_8_material">
+        <color rgba="0.768627 0.886275 0.952941 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.0043 0.0 -0.0715" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.1115 0.1442 0.1429"/>
+      </geometry>
+    </collision>
+  </link>
+  <!-- Link leg4_lower -->
+  <link name="leg4_lower">
+    <inertial>
+      <origin xyz="-0.0136264 -0.0870948 -0.025" rpy="0 0 0"/>
+      <mass value="1.13575"/>
+      <inertia ixx="0.00924521" ixy="-0.000782003" ixz="-0" iyy="0.00202899" iyz="-0" izz="0.0105733"/>
+    </inertial>
+    <!-- Part part_19_4 -->
+    <visual>
+      <origin xyz="-0 -0 -0.265128" rpy="3.14159 0 -0"/>
+      <geometry>
+        <mesh filename="package://spawn_chien/assets/part_19.stl"/>
+      </geometry>
+      <material name="part_19_4_material">
+        <color rgba="0.498039 0.498039 0.498039 1"/>
+      </material>
+    </visual>
+    <!-- Part part_22_4 -->
+    <visual>
+      <origin xyz="0 -0 -0.375128" rpy="-3.14159 -0 0"/>
+      <geometry>
+        <mesh filename="package://spawn_chien/assets/part_22.stl"/>
+      </geometry>
+      <material name="part_22_4_material">
+        <color rgba="0.498039 0.498039 0.498039 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.0 0.11 -0.025" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.13 0.3499 0.05"/>
+      </geometry>
+    </collision>
+  </link>
+  <!-- Link leg4_foot -->
+  <link name="leg4_foot">
+    <inertial>
+      <origin xyz="0.0948155 -0.0714168 -0.02" rpy="0 0 0"/>
+      <mass value="0.752244"/>
+      <inertia ixx="0.00215531" ixy="0.00237894" ixz="-0" iyy="0.00301188" iyz="-0" izz="0.00496208"/>
+    </inertial>
+    <!-- Part part_20_4 -->
+    <visual>
+      <origin xyz="-0.0380282 0.34673 -0.335128" rpy="3.14159 0 -0"/>
+      <geometry>
+        <mesh filename="package://spawn_chien/assets/part_20.stl"/>
+      </geometry>
+      <material name="part_20_4_material">
+        <color rgba="0.980392 0.713725 0.00392157 1"/>
+      </material>
+    </visual>
+    <!-- Foot collision: 2 cm sphere at the contact point (mesh contact is unstable in ODE). -->
+    <collision>
+      <origin xyz="0.19206 -0.15791 -0.04000" rpy="0 0 0"/>
+      <geometry>
+        <sphere radius="0.02"/>
+      </geometry>
+    </collision>
+  </link>
+  <!-- Joint from leg4_lower to leg4_foot -->
+  <joint name="leg4_knee" type="revolute">
+    <origin xyz="-0.00169297 -0.26 -0.005" rpy="-0 0 0"/>
+    <parent link="leg4_lower"/>
+    <child link="leg4_foot"/>
+    <axis xyz="0 0 1"/>
+    <dynamics damping="0.5" friction="0.1"/>
+    <limit effort="35" velocity="10" lower="-3.141592653589793" upper="3.141592653589793"/>
+  </joint>
+  <!-- Joint from leg4_upper to leg4_lower -->
+  <joint name="leg4_flex" type="revolute">
+    <origin xyz="-0.019 -0 -0.0744123" rpy="1.5708 -1.27972 1.5708"/>
+    <parent link="leg4_upper"/>
+    <child link="leg4_lower"/>
+    <axis xyz="0 0 1"/>
+    <dynamics damping="0.5" friction="0.1"/>
+    <limit effort="35" velocity="10" lower="-3.141592653589793" upper="3.141592653589793"/>
+  </joint>
+  <!-- Joint from trunk to leg4_upper -->
+  <joint name="leg4_abduction" type="revolute">
+    <origin xyz="0.237448 -0.0846172 0.499727" rpy="-1.5708 -0 1.5708"/>
+    <parent link="trunk"/>
+    <child link="leg4_upper"/>
+    <axis xyz="0 0 1"/>
+    <dynamics damping="0.5" friction="0.1"/>
+    <limit effort="35" velocity="10" lower="-3.141592653589793" upper="3.141592653589793"/>
+  </joint>
+
+  <!-- ros2_control: "effort" is claimed by the locomotion controller; "position_pid" is unused.
+       position_pid gains are direct <param> children of <joint> (pos_kp/pos_ki/pos_kd). -->
+  <ros2_control name="GazeboSystem" type="system">
+    <hardware>
+      <plugin>gazebo_ros2_control/GazeboSystem</plugin>
+    </hardware>
+    <joint name="leg1_abduction">
+      <param name="pos_kp">300</param>
+      <param name="pos_ki">0</param>
+      <param name="pos_kd">15</param>
+      <command_interface name="position_pid"/>
+      <command_interface name="effort"/>
+      <state_interface name="position">
+        <param name="initial_value">0.0</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+    <joint name="leg1_flex">
+      <param name="pos_kp">300</param>
+      <param name="pos_ki">0</param>
+      <param name="pos_kd">15</param>
+      <command_interface name="position_pid"/>
+      <command_interface name="effort"/>
+      <state_interface name="position">
+        <param name="initial_value">0.52611</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+    <joint name="leg1_knee">
+      <param name="pos_kp">300</param>
+      <param name="pos_ki">0</param>
+      <param name="pos_kd">15</param>
+      <command_interface name="position_pid"/>
+      <command_interface name="effort"/>
+      <state_interface name="position">
+        <param name="initial_value">1.11101567</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+
+    <joint name="leg2_abduction">
+      <param name="pos_kp">300</param>
+      <param name="pos_ki">0</param>
+      <param name="pos_kd">15</param>
+      <command_interface name="position_pid"/>
+      <command_interface name="effort"/>
+      <state_interface name="position">
+        <param name="initial_value">0.0</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+    <joint name="leg2_flex">
+      <param name="pos_kp">300</param>
+      <param name="pos_ki">0</param>
+      <param name="pos_kd">15</param>
+      <command_interface name="position_pid"/>
+      <command_interface name="effort"/>
+      <state_interface name="position">
+        <param name="initial_value">-0.53043</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+    <joint name="leg2_knee">
+      <param name="pos_kp">300</param>
+      <param name="pos_ki">0</param>
+      <param name="pos_kd">15</param>
+      <command_interface name="position_pid"/>
+      <command_interface name="effort"/>
+      <state_interface name="position">
+        <param name="initial_value">1.11062016</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+
+    <joint name="leg3_abduction">
+      <param name="pos_kp">300</param>
+      <param name="pos_ki">0</param>
+      <param name="pos_kd">15</param>
+      <command_interface name="position_pid"/>
+      <command_interface name="effort"/>
+      <state_interface name="position">
+        <param name="initial_value">0.0</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+    <joint name="leg3_flex">
+      <param name="pos_kp">300</param>
+      <param name="pos_ki">0</param>
+      <param name="pos_kd">15</param>
+      <command_interface name="position_pid"/>
+      <command_interface name="effort"/>
+      <state_interface name="position">
+        <param name="initial_value">0.52611</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+    <joint name="leg3_knee">
+      <param name="pos_kp">300</param>
+      <param name="pos_ki">0</param>
+      <param name="pos_kd">15</param>
+      <command_interface name="position_pid"/>
+      <command_interface name="effort"/>
+      <state_interface name="position">
+        <param name="initial_value">1.11101567</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+
+    <joint name="leg4_abduction">
+      <param name="pos_kp">300</param>
+      <param name="pos_ki">0</param>
+      <param name="pos_kd">15</param>
+      <command_interface name="position_pid"/>
+      <command_interface name="effort"/>
+      <state_interface name="position">
+        <param name="initial_value">0.0</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+    <joint name="leg4_flex">
+      <param name="pos_kp">300</param>
+      <param name="pos_ki">0</param>
+      <param name="pos_kd">15</param>
+      <command_interface name="position_pid"/>
+      <command_interface name="effort"/>
+      <state_interface name="position">
+        <param name="initial_value">-0.53043</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+    <joint name="leg4_knee">
+      <param name="pos_kp">300</param>
+      <param name="pos_ki">0</param>
+      <param name="pos_kd">15</param>
+      <command_interface name="position_pid"/>
+      <command_interface name="effort"/>
+      <state_interface name="position">
+        <param name="initial_value">1.11062016</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+  </ros2_control>
+
+  <!-- Gazebo Classic does not apply ros2_control's state initial_value to the physical joints.
+       Set the checked MuJoCo home keyframe during model load, before the first physics update. -->
+  <gazebo>
+    <plugin name="spawn_chien_home_pose" filename="libspawn_chien_home_pose.so">
+      <joint name="leg1_abduction"><position>0.0</position></joint>
+      <joint name="leg1_flex"><position>0.52611</position></joint>
+      <joint name="leg1_knee"><position>1.11101567</position></joint>
+      <joint name="leg2_abduction"><position>0.0</position></joint>
+      <joint name="leg2_flex"><position>-0.53043</position></joint>
+      <joint name="leg2_knee"><position>1.11062016</position></joint>
+      <joint name="leg3_abduction"><position>0.0</position></joint>
+      <joint name="leg3_flex"><position>0.52611</position></joint>
+      <joint name="leg3_knee"><position>1.11101567</position></joint>
+      <joint name="leg4_abduction"><position>0.0</position></joint>
+      <joint name="leg4_flex"><position>-0.53043</position></joint>
+      <joint name="leg4_knee"><position>1.11062016</position></joint>
+    </plugin>
+  </gazebo>
+
+  <gazebo>
+    <!-- CONTROLLERS_YAML_PATH is replaced by spawn_robot.py (the plugin needs a real path). -->
+    <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
+      <parameters>CONTROLLERS_YAML_PATH</parameters>
+    </plugin>
+  </gazebo>
+
+  <!-- Ground-truth trunk pose: localization in simulation and validation. -->
+  <gazebo>
+    <plugin filename="libgazebo_ros_p3d.so" name="gazebo_ros_p3d">
+      <ros>
+        <namespace>/chien</namespace>
+        <remapping>odom:=ground_truth_odom</remapping>
+      </ros>
+      <body_name>trunk</body_name>
+      <frame_name>world</frame_name>
+      <update_rate>100</update_rate>
+      <gaussian_noise>0.0</gaussian_noise>
+    </plugin>
+  </gazebo>
+
+  <!-- Foot contact parameters from unitree_ros go1_description (mu 0.6, ODE kp/kd). -->
+  <!-- Foot bumper sensors, used for diagnostics only (the estimator uses the gait phase). -->
+  <gazebo reference="leg1_foot">
+    <mu1>0.6</mu1>
+    <mu2>0.6</mu2>
+    <kp>1000000.0</kp>
+    <kd>1.0</kd>
+    <sensor name="leg1_foot_contact" type="contact">
+      <always_on>true</always_on>
+      <update_rate>200</update_rate>
+      <contact>
+        <collision>leg1_foot_collision</collision>
+      </contact>
+      <plugin filename="libgazebo_ros_bumper.so" name="leg1_foot_contact_plugin">
+        <ros>
+          <namespace>/chien</namespace>
+          <remapping>bumper_states:=leg1_foot_contact</remapping>
+        </ros>
+        <frame_name>leg1_foot</frame_name>
+      </plugin>
+    </sensor>
+  </gazebo>
+  <gazebo reference="leg2_foot">
+    <mu1>0.6</mu1>
+    <mu2>0.6</mu2>
+    <kp>1000000.0</kp>
+    <kd>1.0</kd>
+    <sensor name="leg2_foot_contact" type="contact">
+      <always_on>true</always_on>
+      <update_rate>200</update_rate>
+      <contact>
+        <collision>leg2_foot_collision</collision>
+      </contact>
+      <plugin filename="libgazebo_ros_bumper.so" name="leg2_foot_contact_plugin">
+        <ros>
+          <namespace>/chien</namespace>
+          <remapping>bumper_states:=leg2_foot_contact</remapping>
+        </ros>
+        <frame_name>leg2_foot</frame_name>
+      </plugin>
+    </sensor>
+  </gazebo>
+  <gazebo reference="leg3_foot">
+    <mu1>0.6</mu1>
+    <mu2>0.6</mu2>
+    <kp>1000000.0</kp>
+    <kd>1.0</kd>
+    <sensor name="leg3_foot_contact" type="contact">
+      <always_on>true</always_on>
+      <update_rate>200</update_rate>
+      <contact>
+        <collision>leg3_foot_collision</collision>
+      </contact>
+      <plugin filename="libgazebo_ros_bumper.so" name="leg3_foot_contact_plugin">
+        <ros>
+          <namespace>/chien</namespace>
+          <remapping>bumper_states:=leg3_foot_contact</remapping>
+        </ros>
+        <frame_name>leg3_foot</frame_name>
+      </plugin>
+    </sensor>
+  </gazebo>
+  <gazebo reference="leg4_foot">
+    <mu1>0.6</mu1>
+    <mu2>0.6</mu2>
+    <kp>1000000.0</kp>
+    <kd>1.0</kd>
+    <sensor name="leg4_foot_contact" type="contact">
+      <always_on>true</always_on>
+      <update_rate>200</update_rate>
+      <contact>
+        <collision>leg4_foot_collision</collision>
+      </contact>
+      <plugin filename="libgazebo_ros_bumper.so" name="leg4_foot_contact_plugin">
+        <ros>
+          <namespace>/chien</namespace>
+          <remapping>bumper_states:=leg4_foot_contact</remapping>
+        </ros>
+        <frame_name>leg4_foot</frame_name>
+      </plugin>
+    </sensor>
+  </gazebo>
+
+  <!-- Simulated sensors (IMU, 3D lidar) on fixed joints, negligible inertia. -->
+  <link name="imu_link">
+    <inertial>
+      <mass value="0.01"/>
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6"/>
+    </inertial>
+  </link>
+  <joint name="imu_joint" type="fixed">
+    <parent link="trunk"/>
+    <child link="imu_link"/>
+    <!-- IMU at the trunk CoM: no lever-arm acceleration term. -->
+    <origin xyz="-0.0520205 0.00128595 0.509659" rpy="0 0 0"/>
+  </joint>
+  <gazebo reference="imu_link">
+    <sensor type="imu" name="imu_sensor">
+      <always_on>true</always_on>
+      <update_rate>1000</update_rate>
+      <plugin filename="libgazebo_ros_imu_sensor.so" name="imu_plugin">
+        <ros>
+          <namespace>/chien</namespace>
+          <remapping>~/out:=imu</remapping>
+        </ros>
+        <frame_name>imu_link</frame_name>
+      </plugin>
+    </sensor>
+  </gazebo>
+
+  <link name="lidar_link">
+    <inertial>
+      <mass value="0.05"/>
+      <inertia ixx="1e-5" ixy="0" ixz="0" iyy="1e-5" iyz="0" izz="1e-5"/>
+    </inertial>
+  </link>
+  <joint name="lidar_joint" type="fixed">
+    <parent link="trunk"/>
+    <child link="lidar_link"/>
+    <origin xyz="0.15 0 0.05" rpy="0 0 0"/>
+  </joint>
+  <gazebo reference="lidar_link">
+    <sensor type="ray" name="lidar_sensor">
+      <always_on>true</always_on>
+      <update_rate>10</update_rate>
+      <ray>
+        <scan>
+          <horizontal>
+            <samples>900</samples>
+            <resolution>1</resolution>
+            <min_angle>-3.14159</min_angle>
+            <max_angle>3.14159</max_angle>
+          </horizontal>
+          <vertical>
+            <samples>16</samples>
+            <resolution>1</resolution>
+            <min_angle>-0.2618</min_angle>
+            <max_angle>0.2618</max_angle>
+          </vertical>
+        </scan>
+        <range>
+          <min>0.1</min>
+          <max>30.0</max>
+          <resolution>0.01</resolution>
+        </range>
+      </ray>
+      <plugin filename="libgazebo_ros_ray_sensor.so" name="lidar_plugin">
+        <ros>
+          <namespace>/chien</namespace>
+          <remapping>~/out:=points</remapping>
+        </ros>
+        <output_type>sensor_msgs/PointCloud2</output_type>
+        <frame_name>lidar_link</frame_name>
+      </plugin>
+    </sensor>
+  </gazebo>
+
+  <!-- RGBD camera on top of the trunk, front side, pitched down. The robot's forward axis is -x of
+       the trunk frame. -->
+  <link name="camera_link">
+    <inertial>
+      <mass value="0.05"/>
+      <inertia ixx="1e-5" ixy="0" ixz="0" iyy="1e-5" iyz="0" izz="1e-5"/>
+    </inertial>
+  </link>
+  <!-- On top of the trunk collision box, near its front edge, 3 cm clearance;
+       ~0.43 m above the ground when standing. -->
+  <joint name="camera_joint" type="fixed">
+    <parent link="trunk"/>
+    <child link="camera_link"/>
+    <!-- Yaw pi: camera +x points to the robot's front; pitch +0.35 then tilts it down. -->
+    <origin xyz="-0.30 0 0.635" rpy="0 0.35 3.14159265"/>
+  </joint>
+
+  <!-- Depth camera sensor. -->
+  <link name="camera_link_optical"/>
+  <joint name="camera_optical_joint" type="fixed">
+    <parent link="camera_link"/>
+    <child link="camera_link_optical"/>
+    <!-- Standard optical frame (REP-103): rpy(-pi/2, 0, -pi/2) from camera_link. -->
+    <origin xyz="0 0 0" rpy="-1.5707963 0 -1.5707963"/>
+  </joint>
+
+  <gazebo reference="camera_link">
+    <sensor type="depth" name="camera_sensor">
+      <always_on>true</always_on>
+      <update_rate>30</update_rate>
+      <camera>
+        <horizontal_fov>1.47</horizontal_fov>
+        <image>
+          <width>640</width>
+          <height>480</height>
+          <format>B8G8R8</format>
+        </image>
+        <depth_camera>
+        </depth_camera>
+        <clip>
+          <near>0.1</near>
+          <far>10.0</far>
+        </clip>
+      </camera>
+      <plugin filename="libgazebo_ros_camera.so" name="camera_plugin">
+        <ros>
+          <namespace>/chien</namespace>
+        </ros>
+        <camera_name>camera</camera_name>
+        <frame_name>camera_link_optical</frame_name>
+      </plugin>
+    </sensor>
+  </gazebo>
+</robot>

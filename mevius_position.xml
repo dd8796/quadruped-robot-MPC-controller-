@@ -1,0 +1,319 @@
+<mujoco model="mevius_position">
+  <!--
+  CORRECTIONS APPLIQUEES (voir chat pour le detail complet) :
+
+  [FAIT] Point 1/2 - Chaque body de jambe recoit maintenant un "quat" derive
+    exactement du rpy de l'origin URDF correspondant (Revolute 1..12),
+    calcule via R = Rz(yaw)*Ry(pitch)*Rx(roll) -> quaternion (convention URDF).
+    Avant : seul le pos (translation) etait repris, le quat etait absent
+    (= identite implicite), donc l'axe reel du joint et l'orientation de
+    toute la chaine aval etaient faux des que rpy != 0.
+    Comme axis="0 0 1" dans l'URDF est deja exprime APRES rotation de
+    l'origin (= repere local du corps enfant), on garde axis="0 0 1" dans
+    MuJoCo tel quel une fois le quat applique : aucune correction d'axe
+    supplementaire n'est necessaire.
+
+  [FAIT] Point 3/4 - La chaine cinematique et le mapping patte/joint URDF
+    ont ete verifies explicitement (voir table ci-dessous) :
+      leg1 (arriere gauche)  : Revolute 1 -> Revolute 7  -> Revolute 11
+      leg2 (arriere droite)  : Revolute 2 -> Revolute 5  -> Revolute 12
+      leg3 (avant gauche)    : Revolute 3 -> Revolute 8  -> Revolute 9
+      leg4 (avant droite)    : Revolute 4 -> Revolute 6  -> Revolute 10
+    Les 4 pattes sont traitees separement (pas de symetrie miroir naive) ;
+    chaque quat est calcule depuis SON PROPRE rpy URDF.
+
+  [FAIT] Point 5 - L1 recalcule comme la vraie norme du vecteur origin du
+    2e joint de chaque patte (deja les xyz reels de l'URDF, inchange
+    numeriquement mais desormais documente/verifie) :
+      leg1/leg3 (Revolute 11 / Revolute 9)  : L1 = 0.263871 m
+      leg2/leg4 (Revolute 12 / Revolute 10) : L1 = 0.260054 m
+
+  [RESOLU] Point 6/7 - L2/position du pied (foot), a partir du vrai mesh.
+    part_20.stl a ete parse directement (4296 sommets, binaire STL). Le
+    point "0 0 -0.24" (arbitraire, direction -Z locale) a ete REMPLACE par
+    le sommet reel du mesh le plus eloigne du joint genou/cheville, exprime
+    dans le repere local de leg*_foot (donc AVANT rotation propre du genou,
+    ce qui est la bonne convention MuJoCo : le joint applique sa propre
+    rotation a ce point automatiquement) :
+        point local = (0.19206, -0.15791, -0.04000)   distance au genou = 0.2518 m
+    Ce point est identique (a 1e-5 pres) sur les 4 pattes : coherent avec
+    la symetrie geometrique attendue, donc fiable.
+    Utilise pour : la capsule de collision (fromto), le geom "foot"
+    (sphere de contact), et le site de reference : les 3 pointent
+    maintenant sur le meme point reel du CAD.
+    ATTENTION : c'est une approximation ponctuelle (un seul point fixe
+    dans le repere local), pas la vraie forme du patin. Standard pour un
+    premier modele de contact (comme go1_position.xml), mais si le patin
+    n'est pas spherique/arrondi a cet endroit precis, le point de contact
+    reel se deplacera legerement selon l'angle du genou pendant la marche.
+
+  [VERIFIE] Point 9 - keyframe "home", verification croisee complete.
+    Deux calculs FK totalement independants ont ete compares :
+      (1) chaine reconstruite a la main depuis les xyz/rpy BRUTS de
+          l'URDF (sans passer par les quats du MJCF),
+      (2) le MJCF corrige charge dans le vrai moteur MuJoCo
+          (mujoco.MjModel + mj_forward), site du pied lu via data.site_xpos.
+    Resultat : ecart < 5e-8 m entre les deux methodes, sur les 4 pattes.
+    Mesure MuJoCo mj_forward du centre de pied pour le keyframe historique
+    qpos z=-0.227277 :
+        leg1: z=-0.0445 m   leg2: z=-0.0451 m
+        leg3: z=-0.0458 m   leg4: z=-0.0458 m
+    Le keyframe etait donc enfoui d'environ 46 mm sous le plan, ce qui
+    provoquait le basculement au demarrage dans Gazebo. Avec qpos z=-0.155512,
+    les centres sont a z=0.0272, 0.0267, 0.0260, 0.0260 m : 6-7 mm de
+    garde au sol pour la sphere de contact de rayon 20 mm, sans penetration
+    initiale dans le ressort de contact ODE.
+
+  [OK] Point 8 - Les offsets de mesh internes (part_9 a "0.187 0 -0.0744123",
+    part_20 a "-0.0380282 0.34673 -0.335128", etc.) restent inchanges : ce
+    sont des positions dans le repere LOCAL du corps, independantes de
+    l'orientation (quat) de ce corps par rapport a son parent. Elles
+    n'avaient pas besoin d'etre corrigees.
+
+  [OK] Point 10 - Ordre qpos verifie : freejoint (x y z qw qx qy qz) puis
+    12 valeurs dans l'ordre leg1(abd,flex,knee), leg2, leg3, leg4 : deja
+    coherent avec l'ordre des <position> actuators ci-dessous.
+
+  : reste du header original :
+  Structure calquee sur go1_position.xml (mujoco_menagerie), adaptee a
+  notre robot avec les vraies donnees extraites de notre URDF.
+    - forcerange = +-10 (limite effort="10" de l'URDF, identique sur les 12 joints)
+    - L2 = 0.24 (donnee, mais direction du pied non resolue, voir plus haut)
+    - damping/armature/frictionloss : heuristiques go1-like, a corriger avec
+      un vrai spin-down test sur le LA8308 + reducteur 9:1.
+    - kp=30/kv=1.5 : gains de controle, non extractibles d'un URDF.
+    - joint range +-180 deg : limite generique Onshape, pas les vraies butees
+      mecaniques de la biellette : toujours a corriger.
+  -->
+
+  <compiler angle="radian" meshdir="assets" autolimits="true"/>
+  <option cone="elliptic" impratio="100"/>
+
+  <default>
+    <default class="mevius">
+      <joint damping="0.5" armature="0.02812" frictionloss="0.1"/>
+      <!-- kp releve de 30 a 300 (kv garde le meme ratio kv/kp=0.05 que l'original,
+           donc 15) : le vrai probleme n'etait pas la geometrie mais l'ecart
+           statique d'un controleur P sous charge (ecart = couple_necessaire/kp).
+           A kp=30, calcule et VERIFIE contre le comportement observe en simu :
+             appui 4 pattes    : tau_genou=7.66 N.m -> ecart predit 0.255 rad
+             trot 2 pattes diag: tau_genou=15.33 N.m -> ecart predit 0.511 rad
+           (l'ecart observe en simu sur leg1, 0.28 rad, colle au 0.255 predit).
+           A kp=300 :
+             appui 4 pattes    : ecart predit ~0.026 rad (1.5 deg)
+             trot 2 pattes diag: ecart predit ~0.051 rad (2.9 deg)
+           forcerange remonte aussi a 20 (voir plus bas) car le couple de trot
+           (15.33 N.m) depasse desormais l'ancien effort="10" de l'URDF : meme
+           remarque qu'avant : 20 N.m est une valeur de simulation, a confronter
+           au vrai LA8308+9:1 avant tout transfert sim-to-real.
+           kp=300/kv=15 est un POINT DE DEPART (ratio heuristique repris de
+           l'original 30/1.5), pas une valeur optimale : si ca oscille/vibre en
+           simu, baisser kp ou monter kv ; si le "droop" reste visible, monter
+           encore kp (tant que forcerange n'est pas sature). -->
+      <position kp="300" kv="15" forcerange="-20 20"/>
+
+      <default class="abduction">
+        <joint axis="0 0 1" range="-3.141592653589793 3.141592653589793"/>
+        <position ctrlrange="-3.141592653589793 3.141592653589793"/>
+      </default>
+      <default class="flex">
+        <joint axis="0 0 1" range="-3.141592653589793 3.141592653589793"/>
+        <position ctrlrange="-3.141592653589793 3.141592653589793"/>
+      </default>
+      <default class="knee">
+        <joint axis="0 0 1" range="-3.141592653589793 3.141592653589793"/>
+        <position ctrlrange="-3.141592653589793 3.141592653589793"/>
+      </default>
+
+      <default class="visual">
+        <geom type="mesh" contype="0" conaffinity="0" group="2" material="dark"/>
+      </default>
+      <default class="collision">
+        <geom group="3" type="capsule" size="0.02"/>
+      </default>
+      <default class="foot">
+        <geom type="sphere" size="0.02" priority="1" condim="6" friction="0.6 0.02 0.01"/>
+      </default>
+    </default>
+  </default>
+
+  <asset>
+    <material name="dark" rgba="0.15 0.15 0.15 1"/>
+    <mesh class="mevius" file="part_21.stl"/>
+    <mesh class="mevius" file="part_9.stl"/>
+    <mesh class="mevius" file="part_12.stl"/>
+    <mesh class="mevius" file="part_19.stl"/>
+    <mesh class="mevius" file="part_22.stl"/>
+    <mesh class="mevius" file="part_20.stl"/>
+  </asset>
+
+  <worldbody>
+    <light name="spotlight" mode="targetbodycom" target="trunk" pos="0 -1 2"/>
+
+    <body name="trunk" pos="0 0 0.6" childclass="mevius">
+      <freejoint/>
+      <inertial pos="-0.0520205 0.00128595 0.509659" mass="5.00095"
+        fullinertia="0.0684615 0.178315 0.212942 1.1544e-07 -0.00117595 -6.10421e-07"/>
+      <geom class="visual" mesh="part_21" pos="0.0704482 -0.0848148 0.833894" quat="0.707105 -0.707108 0.000000 0.000000"/>
+      <geom class="visual" mesh="part_9" pos="-0.140552 -0.0846172 0.499727" quat="0.499998 0.500000 -0.500002 -0.500000"/>
+      <geom class="visual" mesh="part_9" pos="0.0314482 -0.0846172 0.499727" quat="0.499998 0.500000 0.500002 0.500000"/>
+      <geom class="visual" mesh="part_9" pos="0.0314482 0.0871865 0.499727" quat="0.499998 0.500000 0.500002 0.500000"/>
+      <geom class="visual" mesh="part_9" pos="-0.140552 0.0871865 0.499727" quat="0.499998 0.500000 -0.500002 -0.500000"/>
+
+      <!-- ==================== LEG 1 (arriere gauche) : Revolute 1 / 7 / 11 ==================== -->
+      <body name="leg1_upper" pos="-0.346552 0.0871865 0.499727" quat="0.499998 -0.500000 0.500002 -0.500000">
+        <inertial pos="0.0186384 0 -0.0635783" mass="0.507359"
+          fullinertia="0.00181356 0.00127482 0.0011445 0 0.000119632 -0"/>
+        <joint class="abduction" name="leg1_abduction"/>
+        <geom class="visual" mesh="part_9" pos="0.187 0 -0.0744123" quat="0.707105 0.000000 -0.707108 0.000000"/>
+        <geom class="visual" mesh="part_12" pos="0.00808065 -0.335229 -0.058" quat="0.707105 -0.707108 0.000000 0.000000"/>
+        <geom class="collision" fromto="0 0 0 -0.019 0 -0.0744123"/>
+
+        <body name="leg1_lower" pos="-0.019 0 -0.0744123" quat="0.702109 0.083918 0.702110 0.083918">
+          <inertial pos="-0.0136264 0.0870948 -0.025" mass="1.13575"
+            fullinertia="0.00924521 0.00202899 0.0105733 0.000782003 0 -0"/>
+          <joint class="flex" name="leg1_flex"/>
+          <geom class="visual" mesh="part_19" pos="0 0 0.215128" quat="1 0 0 0"/>
+          <geom class="visual" mesh="part_22" pos="0 0 0.325128" quat="1 0 0 0"/>
+          <!-- capsule cuisse : L1 reel = 0.263871 -->
+          <geom class="collision" fromto="0 0 0 -0.00169297 0.26 -0.045"/>
+
+          <body name="leg1_foot" pos="-0.00169297 0.26 -0.045" quat="0.000001 -1.000000 -0.000000 -0.000000">
+            <inertial pos="0.0948155 -0.0714168 -0.02" mass="0.752244"
+              fullinertia="0.00215531 0.00301188 0.00496208 0.00237894 0 -0"/>
+            <joint class="knee" name="leg1_knee"/>
+            <geom class="visual" mesh="part_20" pos="-0.0380282 0.34673 -0.335128" quat="0.000001 -1.000000 0.000000 0.000000"/>
+            <!-- NON RESOLU : direction/longueur reelles du pied, voir note en tete de fichier -->
+            <geom class="collision" fromto="0 0 0 0.19206 -0.15791 -0.04000"/>
+            <geom class="foot" pos="0.19206 -0.15791 -0.04000"/>
+            <site name="leg1_foot_site" pos="0.19206 -0.15791 -0.04000" size="0.01"/>
+          </body>
+        </body>
+      </body>
+
+      <!-- ==================== LEG 2 (arriere droite) : Revolute 2 / 5 / 12 ==================== -->
+      <body name="leg2_upper" pos="-0.346552 -0.0846172 0.499727" quat="0.499998 0.500000 0.500002 0.500000">
+        <inertial pos="0.0186384 0 -0.0635783" mass="0.507359"
+          fullinertia="0.00181356 0.00127482 0.0011445 0 0.000119632 -0"/>
+        <joint class="abduction" name="leg2_abduction"/>
+        <geom class="visual" mesh="part_9" pos="0.187 0 -0.0744123" quat="0.707105 0.000000 -0.707108 0.000000"/>
+        <geom class="visual" mesh="part_12" pos="0.00808065 -0.335229 -0.058" quat="0.707105 -0.707108 0.000000 0.000000"/>
+        <geom class="collision" fromto="0 0 0 -0.019 0 -0.0744123"/>
+
+        <body name="leg2_lower" pos="-0.019 0 -0.0744123" quat="0.701440 -0.089336 0.701441 -0.089336">
+          <inertial pos="-0.0136264 -0.0870948 -0.025" mass="1.13575"
+            fullinertia="0.00924521 0.00202899 0.0105733 -0.000782003 0 0"/>
+          <joint class="flex" name="leg2_flex"/>
+          <geom class="visual" mesh="part_19" pos="0 0 -0.265128" quat="0.000001 -1.000000 0.000000 0.000000"/>
+          <geom class="visual" mesh="part_22" pos="0 0 -0.375128" quat="0.000001 -1.000000 0.000000 0.000000"/>
+          <!-- capsule cuisse : L1 reel = 0.260054 -->
+          <geom class="collision" fromto="0 0 0 -0.00169297 -0.26 -0.005"/>
+
+          <body name="leg2_foot" pos="-0.00169297 -0.26 -0.005" quat="1.000000 0.000000 0.000000 0.000000">
+            <inertial pos="0.0948155 -0.0714168 -0.02" mass="0.752244"
+              fullinertia="0.00215531 0.00301188 0.00496208 0.00237894 0 0"/>
+            <joint class="knee" name="leg2_knee"/>
+            <geom class="visual" mesh="part_20" pos="-0.0380282 0.34673 -0.335128" quat="0.000001 -1.000000 0.000000 0.000000"/>
+            <geom class="collision" fromto="0 0 0 0.19206 -0.15791 -0.04000"/>
+            <geom class="foot" pos="0.19206 -0.15791 -0.04000"/>
+            <site name="leg2_foot_site" pos="0.19206 -0.15791 -0.04000" size="0.01"/>
+          </body>
+        </body>
+      </body>
+
+      <!-- ==================== LEG 3 (avant gauche) : Revolute 3 / 8 / 9 ==================== -->
+      <body name="leg3_upper" pos="0.237448 0.0871865 0.499727" quat="0.499998 0.500000 -0.500002 -0.500000">
+        <inertial pos="0.0186384 0 -0.0635783" mass="0.507359"
+          fullinertia="0.00181356 0.00127482 0.0011445 0 0.000119632 -0"/>
+        <joint class="abduction" name="leg3_abduction"/>
+        <geom class="visual" mesh="part_12" pos="0.00808065 -0.335229 -0.058" quat="0.707105 -0.707108 0.000000 0.000000"/>
+        <geom class="visual" mesh="part_9" pos="0.187 0 -0.0744123" quat="0.000001 0.707105 0.000001 -0.707108"/>
+        <geom class="collision" fromto="0 0 0 -0.019 0 -0.0744123"/>
+
+        <body name="leg3_lower" pos="-0.019 0 -0.0744123" quat="0.103651 -0.699468 0.103656 -0.699468">
+          <inertial pos="-0.0136264 0.0870948 -0.025" mass="1.13575"
+            fullinertia="0.00924521 0.00202899 0.0105733 0.000782003 -0 -0"/>
+          <joint class="flex" name="leg3_flex"/>
+          <geom class="visual" mesh="part_19" pos="0 0 0.215128" quat="1 0 0 0"/>
+          <geom class="visual" mesh="part_22" pos="0 0 0.325128" quat="1 0 0 0"/>
+          <!-- capsule cuisse : L1 reel = 0.263871 -->
+          <geom class="collision" fromto="0 0 0 -0.00169297 0.26 -0.045"/>
+
+          <body name="leg3_foot" pos="-0.00169297 0.26 -0.045" quat="0.000001 1.000000 0.000000 0.000000">
+            <inertial pos="0.0948155 -0.0714168 -0.02" mass="0.752244"
+              fullinertia="0.00215531 0.00301188 0.00496208 0.00237894 -0 0"/>
+            <joint class="knee" name="leg3_knee"/>
+            <geom class="visual" mesh="part_20" pos="-0.0380282 0.34673 -0.335128" quat="0.000001 1.000000 0.000000 0.000000"/>
+            <geom class="collision" fromto="0 0 0 0.19206 -0.15791 -0.04000"/>
+            <geom class="foot" pos="0.19206 -0.15791 -0.04000"/>
+            <site name="leg3_foot_site" pos="0.19206 -0.15791 -0.04000" size="0.01"/>
+          </body>
+        </body>
+      </body>
+
+      <!-- ==================== LEG 4 (avant droite) : Revolute 4 / 6 / 10 ==================== -->
+      <body name="leg4_upper" pos="0.237448 -0.0846172 0.499727" quat="0.499998 -0.500000 -0.500002 0.500000">
+        <inertial pos="0.0186384 0 -0.0635783" mass="0.507359"
+          fullinertia="0.00181356 0.00127482 0.0011445 0 0.000119632 -0"/>
+        <joint class="abduction" name="leg4_abduction"/>
+        <geom class="visual" mesh="part_12" pos="0.00808065 -0.335229 -0.058" quat="0.707105 -0.707108 0.000000 0.000000"/>
+        <geom class="visual" mesh="part_9" pos="0.187 0 -0.0744123" quat="0.000001 0.707105 0.000001 -0.707108"/>
+        <geom class="collision" fromto="0 0 0 -0.019 0 -0.0744123"/>
+
+        <body name="leg4_lower" pos="-0.019 0 -0.0744123" quat="0.102546 0.699631 0.102551 0.699631">
+          <inertial pos="-0.0136264 -0.0870948 -0.025" mass="1.13575"
+            fullinertia="0.00924521 0.00202899 0.0105733 -0.000782003 -0 -0"/>
+          <joint class="flex" name="leg4_flex"/>
+          <geom class="visual" mesh="part_19" pos="0 0 -0.265128" quat="0.000001 -1.000000 0.000000 0.000000"/>
+          <geom class="visual" mesh="part_22" pos="0 0 -0.375128" quat="0.000001 -1.000000 0.000000 0.000000"/>
+          <!-- capsule cuisse : L1 reel = 0.260054 -->
+          <geom class="collision" fromto="0 0 0 -0.00169297 -0.26 -0.005"/>
+
+          <body name="leg4_foot" pos="-0.00169297 -0.26 -0.005" quat="1.000000 0.000000 0.000000 0.000000">
+            <inertial pos="0.0948155 -0.0714168 -0.02" mass="0.752244"
+              fullinertia="0.00215531 0.00301188 0.00496208 0.00237894 -0 -0"/>
+            <joint class="knee" name="leg4_knee"/>
+            <geom class="visual" mesh="part_20" pos="-0.0380282 0.34673 -0.335128" quat="0.000001 1.000000 0.000000 0.000000"/>
+            <geom class="collision" fromto="0 0 0 0.19206 -0.15791 -0.04000"/>
+            <geom class="foot" pos="0.19206 -0.15791 -0.04000"/>
+            <site name="leg4_foot_site" pos="0.19206 -0.15791 -0.04000" size="0.01"/>
+          </body>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+
+  <actuator>
+    <position class="abduction" name="leg1_abduction" joint="leg1_abduction"/>
+    <position class="flex"      name="leg1_flex"      joint="leg1_flex"/>
+    <position class="knee"      name="leg1_knee"       joint="leg1_knee"/>
+
+    <position class="abduction" name="leg2_abduction" joint="leg2_abduction"/>
+    <position class="flex"      name="leg2_flex"      joint="leg2_flex"/>
+    <position class="knee"      name="leg2_knee"       joint="leg2_knee"/>
+
+    <position class="abduction" name="leg3_abduction" joint="leg3_abduction"/>
+    <position class="flex"      name="leg3_flex"      joint="leg3_flex"/>
+    <position class="knee"      name="leg3_knee"       joint="leg3_knee"/>
+
+    <position class="abduction" name="leg4_abduction" joint="leg4_abduction"/>
+    <position class="flex"      name="leg4_flex"      joint="leg4_flex"/>
+    <position class="knee"      name="leg4_knee"       joint="leg4_knee"/>
+  </actuator>
+
+  <!-- home reprend exactement l'IK de mpc_eval.py (q_knee ~= 1.11); la hauteur
+       est calculee par FK pour poser le pied le plus bas sur le plan. -->
+  <keyframe>
+    <!-- Position du root : centre du pied le plus bas à 20 mm au-dessus du plan. -->
+    <key name="home"
+      qpos="0 0 -0.20727654 1 0 0 0
+            0 0.52611 1.11101567
+            0 -0.53043 1.11062016
+            0 0.52611 1.11101567
+            0 -0.53043 1.11062016"
+      ctrl="0 0.52611 1.11101567
+            0 -0.53043 1.11062016
+            0 0.52611 1.11101567
+            0 -0.53043 1.11062016"/>
+  </keyframe>
+</mujoco>

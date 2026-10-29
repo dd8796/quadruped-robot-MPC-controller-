@@ -1,0 +1,34 @@
+# Fast trot on flat ground (launch/trot_flat.launch.py). Same controller as the stairs profile,
+# with a running trot: 0.3 s cycle, 50 % stance, 6 cm swing.
+controller_manager:
+  ros__parameters:
+    update_rate: 1000  # Hz
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+    mevius_mpc_controller:
+      type: quadru_control/CheetahController
+
+mevius_mpc_controller:
+  ros__parameters:
+    # Walking speed (m/s). Override at launch with speed:=<m/s>, or live with
+    # ros2 param set /mevius_mpc_controller walk_speed <m/s>.
+    walk_speed: 0.8
+    # Speed ramp from standstill and on speed changes (m/s^2).
+    cmd_accel_limit: 1.0
+    # Removes the remaining steady-state speed error (1/s).
+    vel_integral_gain: 0.5
+    gait_cycle_s: 0.3
+    gait_duty: 0.5
+    swing_height: 0.06
+    # Joint friction feedforward: the URDF joint <dynamics> (damping 0.5, friction 0.1). To be
+    # identified on the real actuators.
+    joint_damping_comp: 0.5
+    joint_friction_comp: 0.1
+    # Leg odometry at the contact point of the rolling foot sphere (speed error 7 % -> < 1 %).
+    foot_rolling_comp: true
+    localization_topic: /chien/ground_truth_odom
+    swing_control: osc
+    swing_omega: 50.0
+    swing_zeta: 1.0
